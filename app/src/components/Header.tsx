@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
 import HamburgerMenu from './HamburgerMenu';
+import CategoriesModal from './CategoriesModal';
 import '../styles/Header.css';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleOpenCategoriesModal = () => {
+    setIsCategoriesModalOpen(true);
+    setIsMenuOpen(false); // Fecha o menu quando abre o modal
+  };
+
+  const handleCloseCategoriesModal = () => {
+    setIsCategoriesModalOpen(false);
   };
 
   return (
@@ -31,10 +42,19 @@ const Header: React.FC = () => {
               </span>
               <span className="nav-label">Cadastro</span>
             </button>
-            <HamburgerMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+            <HamburgerMenu 
+              isOpen={isMenuOpen} 
+              onClose={() => setIsMenuOpen(false)}
+              onOpenCategoriesModal={handleOpenCategoriesModal}
+            />
           </div>
         </nav>
       </div>
+      
+      <CategoriesModal 
+        isOpen={isCategoriesModalOpen}
+        onClose={handleCloseCategoriesModal}
+      />
     </header>
   );
 };

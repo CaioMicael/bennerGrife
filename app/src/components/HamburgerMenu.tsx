@@ -1,15 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../styles/HamburgerMenu.css';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenCategoriesModal: () => void;
 }
 
-const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
+const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose, onOpenCategoriesModal }) => {
   const menuRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,10 +44,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   };
 
   const handleCategoryClick = () => {
-    // Futuramente navegará para a página de categorias
-    // navigate('/categorias'); // Descomentado quando a rota for criada
-    console.log('Navegando para cadastro de categorias...');
-    onClose();
+    onOpenCategoriesModal();
   };
 
   if (!isOpen) return null;
