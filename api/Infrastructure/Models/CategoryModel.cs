@@ -21,7 +21,7 @@ namespace bennerGrife.Infrastructure.Models
         [Column("description")]
         public string Description { get; set; }
 
-        [Column("", TypeName = "date")]
+        [Column("createData", TypeName = "date")]
         public DateOnly Date { get; private set; } = DateOnly.FromDateTime(DateTime.Today);
     }
 }
