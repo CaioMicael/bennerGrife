@@ -8,14 +8,9 @@ namespace api.Domain.Interfaces
     public interface IResultBase
     {
         /// <summary>
-        /// Indica se o retorno deve ser sucesso
+        /// Indica o status code a ser retornado
         /// </summary>
-        bool IsSuccess { get; }
-
-        /// <summary>
-        /// Indica se o retorno deve ser de objeto criado
-        /// </summary>
-        bool IsCreated { get; }
+        public int StatusCode { get; }
 
         DomainError Error { get; }
         object GetValue();

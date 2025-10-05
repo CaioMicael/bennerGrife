@@ -15,39 +15,14 @@ namespace api.middlewares
         /// Se sim, será utilizado o result definido, desta forma o controller não precisa se preocupar
         /// com status code, mas sim apenas orquestrar as chamadas.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="next"></param>
+        /// <param name="context">ResultExecutingContext</param>
+        /// <param name="next">ResultExecutionDelegate</param>
         /// <returns></returns>
         public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
             if (context.Result is ObjectResult objectResult && objectResult.Value is IResultBase result)
             {
-                if (result.IsCreated)
-                {
-                    context.Result = new ObjectResult(result.GetValue())
-                    {
-                        StatusCode = StatusCodes.Status201Created
-                    };
-                }
-                else if (result.IsSuccess)
-                {
-                    context.Result = new ObjectResult(result.GetValue())
-                    {
-                        StatusCode = StatusCodes.Status200OK
-                    };
-                }
-                else
-                {
-                    context.Result = new ObjectResult(new
-                    {
-                        error = result.Error.Code,
-                        message = result.Error.Message
-
-                    })
-                    {
-                        StatusCode = result.Error.StatusCode
-                    };
-                }
+                context.Result = new ObjectResult(result);
             }
 
             await next();

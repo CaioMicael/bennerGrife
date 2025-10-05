@@ -1,3 +1,4 @@
+using api.middlewares;
 using bennerGrife.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,6 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var conexao = builder.Configuration.GetConnectionString("Postgres");
 builder.Services.AddDbContext<AppDbContext>(b => b.UseNpgsql(conexao));
+
+// Filters
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ResultFilter>();
+});
 
 // Add services to the container.
 

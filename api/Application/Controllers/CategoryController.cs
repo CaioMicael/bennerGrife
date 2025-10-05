@@ -1,3 +1,5 @@
+using api.Core.Common;
+using api.Domain.Errors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bennerGrife.Application.Controllers
@@ -11,9 +13,10 @@ namespace bennerGrife.Application.Controllers
 
         [HttpGet]
         [Route("GetCategories")]
-        public string GetCategories()
+        public Result<string> GetCategories()
         {
-            return "teste";
+            //return Result<string>.ReturnResult("sucesso", StatusCodes.Status200OK);
+            return Result<string>.Failure(DomainError.Unauthorized);
         }
     }
 }
