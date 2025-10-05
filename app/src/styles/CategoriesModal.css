@@ -211,6 +211,104 @@
   background: #2563eb;
 }
 
+.btn-primary:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover {
+  background: #93c5fd;
+}
+
+.create-category-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1002;
+}
+
+.create-category-modal {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+  width: 100%;
+  max-width: 520px;
+  padding: 24px 28px 28px;
+  animation: createModalFadeIn 0.25s ease-out;
+}
+
+.create-category-header h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.25px;
+}
+
+.create-category-subtitle {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.create-category-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.create-category-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.create-category-form input,
+.create-category-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.create-category-form input:focus,
+.create-category-form textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  outline: none;
+}
+
+.create-category-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+@keyframes createModalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .categories-modal {
@@ -252,6 +350,19 @@
 }
 
 @media (max-width: 480px) {
+  .create-category-modal {
+    padding: 20px 20px 24px;
+  }
+
+  .create-category-actions {
+    flex-direction: column-reverse;
+  }
+
+  .create-category-actions .btn-secondary,
+  .create-category-actions .btn-primary {
+    width: 100%;
+  }
+
   .modal-close-btn {
     font-size: 1.5rem;
     width: 32px;

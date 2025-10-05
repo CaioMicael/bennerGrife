@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HamburgerMenu from './HamburgerMenu';
-import CategoriesModal from './CategoriesModal';
+import CategoriesModal from '../pages/CategoriesModal';
 import '../styles/Header.css';
 
 const Header: React.FC = () => {

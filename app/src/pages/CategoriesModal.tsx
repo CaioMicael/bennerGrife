@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import CategoriesInclude, { CategoriesIncludeHandle } from './CategoriesInclude';
 import '../styles/CategoriesModal.css';
 
 interface Category {
@@ -15,6 +16,8 @@ interface CategoriesModalProps {
 
 const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const categoriesIncludeRef = useRef<CategoriesIncludeHandle | null>(null);
+  const [isIncludeOpen, setIsIncludeOpen] = useState(false);
 
   // Dados mockados das categorias - futuramente virão da API
   const categories: Category[] = [
@@ -52,6 +55,10 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) =>
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (isIncludeOpen) {
+        return;
+      }
+
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
       }
@@ -74,7 +81,15 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) =>
       document.removeEventListener('keydown', handleEscapeKey);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, isIncludeOpen, onClose]);
+
+  const handleOpenCreateForm = () => {
+    categoriesIncludeRef.current?.open();
+  };
+
+  const handleConfirmCreate = (payload: { name: string; description: string }) => {
+    console.log('Confirmar criação de categoria', payload);
+  };
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -129,11 +144,17 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) =>
           <button className="btn-secondary" onClick={onClose}>
             Fechar
           </button>
-          <button className="btn-primary">
+          <button className="btn-primary" onClick={handleOpenCreateForm}>
             Adicionar Nova Categoria
           </button>
         </div>
       </div>
+
+      <CategoriesInclude
+        ref={categoriesIncludeRef}
+        onConfirm={handleConfirmCreate}
+        onVisibilityChange={setIsIncludeOpen}
+      />
     </>
   );
 };
