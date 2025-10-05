@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import CategoriesInclude, { CategoriesIncludeHandle } from './CategoriesInclude';
+import Pagination from '../components/Pagination';
 import '../styles/CategoriesModal.css';
 
 interface Category {
@@ -14,10 +15,13 @@ interface CategoriesModalProps {
   onClose: () => void;
 }
 
+const ITEMS_PER_PAGE = 3;
+
 const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const categoriesIncludeRef = useRef<CategoriesIncludeHandle | null>(null);
   const [isIncludeOpen, setIsIncludeOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Dados mockados das categorias - futuramente virão da API
   const categories: Category[] = [
@@ -83,6 +87,31 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) =>
     };
   }, [isOpen, isIncludeOpen, onClose]);
 
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentPage(1);
+    }
+  }, [isOpen]);
+
+  const totalPages = useMemo(() => {
+    if (categories.length === 0) {
+      return 1;
+    }
+
+    return Math.ceil(categories.length / ITEMS_PER_PAGE);
+  }, [categories.length]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const paginatedCategories = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return categories.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [categories, currentPage]);
+
   const handleOpenCreateForm = () => {
     categoriesIncludeRef.current?.open();
   };
@@ -121,9 +150,10 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) =>
               <p>Ainda não há categorias cadastradas no sistema.</p>
             </div>
           ) : (
-            <div className="categories-grid">
-              {categories.map(category => (
-                <div key={category.id} className="category-card">
+            <>
+              <div className="categories-grid">
+                {paginatedCategories.map(category => (
+                  <div key={category.id} className="category-card">
                   <div className="category-header">
                     <h3 className="category-name">{category.name}</h3>
                     <span className="category-id">#{category.id}</span>
@@ -135,8 +165,19 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({ isOpen, onClose }) =>
                     </span>
                   </div>
                 </div>
-              ))}
-            </div>
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="categories-pagination">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
         

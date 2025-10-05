@@ -83,6 +83,12 @@
   overflow-y: auto;
 }
 
+.categories-pagination {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
 /* Empty State */
 .empty-state {
   text-align: center;
@@ -331,6 +337,10 @@
   .categories-grid {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .categories-pagination {
+    margin-top: 20px;
   }
   
   .category-card {
